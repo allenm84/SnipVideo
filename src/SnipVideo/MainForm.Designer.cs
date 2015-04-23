@@ -242,6 +242,7 @@
       this.treeFiles.Size = new System.Drawing.Size(305, 426);
       this.treeFiles.TabIndex = 4;
       this.treeFiles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeFiles_AfterSelect);
+      this.treeFiles.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeFiles_NodeMouseDoubleClick);
       this.treeFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.treeFiles_DragDrop);
       this.treeFiles.DragEnter += new System.Windows.Forms.DragEventHandler(this.treeFiles_DragEnter);
       this.treeFiles.DragOver += new System.Windows.Forms.DragEventHandler(this.treeFiles_DragEnter);

@@ -45,6 +45,7 @@ namespace SnipVideo
       else
       {
         progStatus.Text = packet.Text;
+        progStatus.Refresh();
       }
     }
 
@@ -139,7 +140,7 @@ namespace SnipVideo
         foreach (var trim in file.Nodes.OfType<VideoFileTrimNode>())
         {
           var sb = new StringBuilder();
-          sb.AppendFormat("-i \"{0}\"", file.Filepath);
+          sb.AppendFormat("-y -i \"{0}\"", file.Filepath);
           sb.AppendFormat(" -ss {0}", trim.Start.GetText());
           if (trim.SpecifyEnd)
           {
@@ -165,8 +166,11 @@ namespace SnipVideo
             File.WriteAllBytes(filepath, Resources.ffmpeg);
             foreach (var arg in args)
             {
-              string text = arg.Split(' ').Last();
-              progress.Report(ReportPacket.MakeText(text));
+              string output = arg.Split(' ').Last();
+              output = output.Replace("\"", "");
+              output = Path.GetFileName(output);
+              progress.Report(ReportPacket.MakeText(output));
+
               var info = new ProcessStartInfo(filepath, arg);
               info.UseShellExecute = false;
               info.CreateNoWindow = true;
@@ -207,6 +211,11 @@ namespace SnipVideo
     private void treeFiles_AfterSelect(object sender, TreeViewEventArgs e)
     {
       UpdateButtonsAsync();
+    }
+
+    private void treeFiles_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+    {
+      btnEditTrim.PerformClick();
     }
 
     private void btnAddVideo_Click(object sender, EventArgs e)
@@ -316,7 +325,9 @@ namespace SnipVideo
       var args = GenerateArguments().ToArray();
       progStatus.Value = 0;
       progStatus.Maximum = args.Length;
-      RunSnipVideo(args, new Progress<ReportPacket>(AcceptPacket));
+
+      var progress = new Progress<ReportPacket>(AcceptPacket);
+      RunSnipVideo(args, progress);
     }
   }
 }

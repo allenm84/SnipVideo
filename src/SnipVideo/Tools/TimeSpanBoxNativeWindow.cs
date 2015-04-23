@@ -27,6 +27,7 @@ namespace SnipVideo
       set
       {
         control.Text = value.GetText();
+        FireValueChanged();
       }
     }
 

@@ -42,11 +42,11 @@ namespace System.Windows.Forms
       get { return base.Text; }
       set
       {
+        base.Text = value;
         if (!string.Equals(value, base.Text))
         {
           Refresh();
         }
-        base.Text = value;
       }
     }
 
