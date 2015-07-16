@@ -64,9 +64,13 @@ namespace SnipVideo
 
     private void AddFile(string file)
     {
-      string ext = string.Format("*{0};", Path.GetExtension(file));
-      if (!openFileDialog.Filter.Contains(ext))
+      string ext = string.Format("*{0};", Path.GetExtension(file)).ToLower();
+      string filter = openFileDialog.Filter.ToLower();
+
+      if (!filter.Contains(ext))
       {
+        MessageBox.Show(this, "Wrong video file type.", "Error", 
+          MessageBoxButtons.OK, MessageBoxIcon.Information);
         return;
       }
 
