@@ -18,7 +18,7 @@ namespace SnipVideo
 
     public static string GetText(this TimeSpan span)
     {
-      return span.ToString(@"hh\:mm\:ss");
+      return span.ToString(@"hh\:mm\:ss\.fff");
     }
 
     public static DirectoryInfo GetSubdirectory(this DirectoryInfo parent, string subdirectoryName)

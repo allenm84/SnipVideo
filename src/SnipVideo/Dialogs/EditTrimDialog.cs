@@ -12,8 +12,8 @@ namespace SnipVideo
 {
   public partial class EditTrimDialog : BaseForm
   {
-    private TimeSpanBoxNativeWindow start;
-    private TimeSpanBoxNativeWindow end;
+    private TimeSpanBox start;
+    private TimeSpanBox end;
 
     public bool SpecifyEnd
     {
@@ -38,10 +38,10 @@ namespace SnipVideo
       InitializeComponent();
       UpdateCheckBoxText();
 
-      start = new TimeSpanBoxNativeWindow(txtStart);
+      start = new TimeSpanBox(txtStart);
       start.ValueChanged += start_ValueChanged;
 
-      end = new TimeSpanBoxNativeWindow(txtEnd);
+      end = new TimeSpanBox(txtEnd);
       end.ValueChanged += end_ValueChanged;
 
       txtEnd.DataBindings.Add("Enabled", chkEnd, "Checked");
@@ -55,7 +55,7 @@ namespace SnipVideo
         : "End (go to end of the video):";
     }
 
-    private void UpdateDisplay(Label label, TimeSpanBoxNativeWindow value)
+    private void UpdateDisplay(Label label, TimeSpanBox value)
     {
       double seconds = value.Value.TotalSeconds;
       label.Text = string.Format("{0} second{1}", seconds,
