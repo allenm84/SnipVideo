@@ -132,7 +132,17 @@ namespace SnipVideo
       trim.Start = dlg.Start;
       trim.End = dlg.End;
       trim.SpecifyEnd = dlg.SpecifyEnd;
+      trim.TrimName = dlg.TrimName;
       trim.UpdateText();
+    }
+
+    private string[] GetTrimNames(VideoFileTrimNode trim = null)
+    {
+      return treeFiles.Nodes.OfType<VideoFileNode>()
+        .SelectMany(n => n.Nodes.OfType<VideoFileTrimNode>())
+        .Where(n => n != trim)
+        .Select(n => n.TrimName)
+        .ToArray();
     }
 
     private IEnumerable<string> GenerateArguments()
@@ -152,7 +162,7 @@ namespace SnipVideo
             sb.AppendFormat(" -t {0}", duration.GetText());
           }
           sb.Append(" -async 1");
-          sb.AppendFormat(" \"{0}\"", file.GenerateTrimPath(n++));
+          sb.AppendFormat(" \"{0}\"", file.GenerateTrimPath(n++, trim));
           yield return sb.ToString();
         }
       }
@@ -259,7 +269,7 @@ namespace SnipVideo
         return;
       }
 
-      using (var dlg = new EditTrimDialog())
+      using (var dlg = new EditTrimDialog(GetTrimNames()))
       {
         dlg.Text = "Add Trim";
         if (dlg.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
@@ -280,12 +290,13 @@ namespace SnipVideo
         return;
       }
 
-      using (var dlg = new EditTrimDialog())
+      using (var dlg = new EditTrimDialog(GetTrimNames(trim)))
       {
         dlg.Text = "Edit Trim";
         dlg.Start = trim.Start;
         dlg.End = trim.End;
         dlg.SpecifyEnd = trim.SpecifyEnd;
+        dlg.TrimName = trim.TrimName;
 
         if (dlg.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
         {

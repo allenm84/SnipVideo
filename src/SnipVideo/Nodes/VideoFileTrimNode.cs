@@ -9,14 +9,15 @@ namespace SnipVideo
 {
   public class VideoFileTrimNode : TreeNode
   {
-    public TimeSpan Start { get; set; }
-    public TimeSpan End { get; set; }
-    public bool SpecifyEnd { get; set; }
-
     public VideoFileTrimNode()
     {
       UpdateText();
     }
+
+    public string TrimName { get; set; }
+    public TimeSpan Start { get; set; }
+    public TimeSpan End { get; set; }
+    public bool SpecifyEnd { get; set; }
 
     public void UpdateText()
     {

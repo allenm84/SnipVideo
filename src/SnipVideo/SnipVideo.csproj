@@ -73,8 +73,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Nodes\VideoFileTrimNode.cs" />
     <Compile Include="Data\ReportPacket.cs" />
+    <Compile Include="Controls\TimeSpanEditBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\TimeSpanEditBox.Designer.cs">
+      <DependentUpon>TimeSpanEditBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tools\TextLookUp.cs" />
-    <Compile Include="Tools\TimeSpanBox.cs" />
     <Compile Include="Nodes\VideoFileNode.cs" />
     <EmbeddedResource Include="Dialogs\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
@@ -95,6 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="Controls\TimeSpanEditBox.resx">
+      <DependentUpon>TimeSpanEditBox.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -12,8 +12,27 @@ namespace SnipVideo
 {
   public partial class EditTrimDialog : BaseForm
   {
-    private TimeSpanBox start;
-    private TimeSpanBox end;
+    private readonly string[] mExistingNames;
+
+    public EditTrimDialog(string[] existingNames)
+    {
+      mExistingNames = existingNames;
+
+      InitializeComponent();
+      UpdateCheckBoxText();
+
+      txtStart.ValueChanged += start_ValueChanged;
+      txtEnd.ValueChanged += end_ValueChanged;
+
+      txtEnd.DataBindings.Add("Enabled", chkEnd, "Checked");
+      chkEnd.CheckedChanged += chkEnd_CheckedChanged;
+    }
+
+    public string TrimName
+    {
+      get { return txtName.Text; }
+      set { txtName.Text = value; }
+    }
 
     public bool SpecifyEnd
     {
@@ -23,29 +42,14 @@ namespace SnipVideo
 
     public TimeSpan Start
     {
-      get { return start.Value; }
-      set { start.Value = value; }
+      get { return txtStart.Value; }
+      set { txtStart.Value = value; }
     }
 
     public TimeSpan End
     {
-      get { return end.Value; }
-      set { end.Value = value; }
-    }
-
-    public EditTrimDialog()
-    {
-      InitializeComponent();
-      UpdateCheckBoxText();
-
-      start = new TimeSpanBox(txtStart);
-      start.ValueChanged += start_ValueChanged;
-
-      end = new TimeSpanBox(txtEnd);
-      end.ValueChanged += end_ValueChanged;
-
-      txtEnd.DataBindings.Add("Enabled", chkEnd, "Checked");
-      chkEnd.CheckedChanged += chkEnd_CheckedChanged;
+      get { return txtEnd.Value; }
+      set { txtEnd.Value = value; }
     }
 
     private void UpdateCheckBoxText()
@@ -55,7 +59,7 @@ namespace SnipVideo
         : "End (go to end of the video):";
     }
 
-    private void UpdateDisplay(Label label, TimeSpanBox value)
+    private void UpdateDisplay(Label label, TimeSpanEditBox value)
     {
       double seconds = value.Value.TotalSeconds;
       label.Text = string.Format("{0} second{1}", seconds,
@@ -64,12 +68,12 @@ namespace SnipVideo
 
     private void start_ValueChanged(object sender, EventArgs e)
     {
-      UpdateDisplay(lblStartDisplay, start);
+      UpdateDisplay(lblStartDisplay, txtStart);
     }
 
     private void end_ValueChanged(object sender, EventArgs e)
     {
-      UpdateDisplay(lblEndDisplay, end);
+      UpdateDisplay(lblEndDisplay, txtEnd);
     }
 
     private void chkEnd_CheckedChanged(object sender, EventArgs e)
@@ -79,10 +83,17 @@ namespace SnipVideo
 
     private void btnOK_Click(object sender, EventArgs e)
     {
-      if (chkEnd.Checked && (end.Value <= start.Value))
+      if (chkEnd.Checked && (End <= Start))
       {
         cancelClose = true;
         MessageBox.Show(this, "Please specify an end time that is after the start time", "End Time", 
+          MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
+
+      if (Array.IndexOf(mExistingNames, txtName.Text) > -1)
+      {
+        cancelClose = true;
+        MessageBox.Show(this, "The name you selected is already being used. Please select another name", "Name in Use",
           MessageBoxButtons.OK, MessageBoxIcon.Information);
       }
     }
